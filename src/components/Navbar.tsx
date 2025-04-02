@@ -1,14 +1,20 @@
 
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { CreditCard, LineChart, PiggyBank, BarChart3, User } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
 
   const handleLogout = async () => {
     try {
@@ -38,23 +44,43 @@ const Navbar: React.FC = () => {
         <nav className="hidden md:flex items-center space-x-6">
           {currentUser && (
             <>
-              <Link to="/dashboard" className="text-gray-600 hover:text-finance-primary transition-colors">
+              <Link 
+                to="/dashboard" 
+                className={`flex items-center gap-1.5 ${isActive('/dashboard') ? 'text-finance-primary font-medium' : 'text-gray-600 hover:text-finance-primary'} transition-colors`}
+              >
+                <LineChart className="h-4 w-4" />
                 Dashboard
               </Link>
-              <Link to="/transactions" className="text-gray-600 hover:text-finance-primary transition-colors">
+              <Link 
+                to="/transactions" 
+                className={`flex items-center gap-1.5 ${isActive('/transactions') ? 'text-finance-primary font-medium' : 'text-gray-600 hover:text-finance-primary'} transition-colors`}
+              >
+                <CreditCard className="h-4 w-4" />
                 Transactions
               </Link>
-              <Link to="/budgets" className="text-gray-600 hover:text-finance-primary transition-colors">
+              <Link 
+                to="/budgets" 
+                className={`flex items-center gap-1.5 ${isActive('/budgets') ? 'text-finance-primary font-medium' : 'text-gray-600 hover:text-finance-primary'} transition-colors`}
+              >
+                <BarChart3 className="h-4 w-4" />
                 Budgets
               </Link>
-              <Link to="/goals" className="text-gray-600 hover:text-finance-primary transition-colors">
+              <Link 
+                to="/goals" 
+                className={`flex items-center gap-1.5 ${isActive('/goals') ? 'text-finance-primary font-medium' : 'text-gray-600 hover:text-finance-primary'} transition-colors`}
+              >
+                <PiggyBank className="h-4 w-4" />
                 Goals
-              </Link>
-              <Link to="/reports" className="text-gray-600 hover:text-finance-primary transition-colors">
-                Reports
               </Link>
             </>
           )}
+          <Link 
+            to="/profile" 
+            className={`flex items-center gap-1.5 ${isActive('/profile') ? 'text-finance-primary font-medium' : 'text-gray-600 hover:text-finance-primary'} transition-colors`}
+          >
+            <User className="h-4 w-4" />
+            About Us
+          </Link>
         </nav>
 
         <div className="flex items-center space-x-4">
