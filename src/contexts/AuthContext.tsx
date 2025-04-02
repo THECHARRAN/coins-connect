@@ -6,7 +6,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   User as FirebaseUser,
-  updateProfile
+  updateProfile,
+  UserCredential
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { User } from "@/types";
@@ -49,12 +50,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentUser(transformUser(userCredential.user));
   }
 
-  function login(email: string, password: string) {
-    return signInWithEmailAndPassword(auth, email, password);
+  async function login(email: string, password: string) {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    setCurrentUser(transformUser(userCredential.user));
   }
 
-  function logout() {
-    return signOut(auth);
+  async function logout() {
+    await signOut(auth);
+    setCurrentUser(null);
   }
 
   useEffect(() => {
