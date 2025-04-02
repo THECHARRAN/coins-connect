@@ -1,4 +1,3 @@
-
 import { 
   collection, 
   addDoc, 
@@ -25,12 +24,13 @@ export const addSavingsGoal = async (goal: Omit<SavingsGoal, 'id' | 'createdAt'>
     return { id: docRef.id, ...goal };
   } catch (error) {
     console.error("Error adding savings goal: ", error);
-    throw error;
+    throw new Error("Failed to add savings goal. Please check your Firestore rules and permissions.");
   }
 };
 
 export const getSavingsGoals = async (userId: string) => {
   try {
+    console.log("Fetching goals for user:", userId);
     const q = query(
       collection(db, savingsGoalCollection),
       where("userId", "==", userId),
@@ -38,6 +38,7 @@ export const getSavingsGoals = async (userId: string) => {
     );
     
     const querySnapshot = await getDocs(q);
+    console.log("Goals query snapshot size:", querySnapshot.size);
     const goals: SavingsGoal[] = [];
     
     querySnapshot.forEach((doc) => {
@@ -53,7 +54,7 @@ export const getSavingsGoals = async (userId: string) => {
     return goals;
   } catch (error) {
     console.error("Error getting savings goals: ", error);
-    throw error;
+    throw new Error("Failed to retrieve savings goals. Please check your Firestore rules and permissions.");
   }
 };
 

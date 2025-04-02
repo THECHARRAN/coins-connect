@@ -1,4 +1,3 @@
-
 import { 
   collection, 
   addDoc, 
@@ -25,12 +24,13 @@ export const addTransaction = async (transaction: Omit<Transaction, 'id' | 'crea
     return { id: docRef.id, ...transaction };
   } catch (error) {
     console.error("Error adding transaction: ", error);
-    throw error;
+    throw new Error("Failed to add transaction. Please check your Firestore rules and permissions.");
   }
 };
 
 export const getTransactions = async (userId: string) => {
   try {
+    console.log("Fetching transactions for user:", userId);
     const q = query(
       collection(db, transactionCollection),
       where("userId", "==", userId),
@@ -38,6 +38,7 @@ export const getTransactions = async (userId: string) => {
     );
     
     const querySnapshot = await getDocs(q);
+    console.log("Query snapshot size:", querySnapshot.size);
     const transactions: Transaction[] = [];
     
     querySnapshot.forEach((doc) => {
@@ -53,7 +54,7 @@ export const getTransactions = async (userId: string) => {
     return transactions;
   } catch (error) {
     console.error("Error getting transactions: ", error);
-    throw error;
+    throw new Error("Failed to retrieve transactions. Please check your Firestore rules and permissions.");
   }
 };
 

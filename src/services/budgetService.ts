@@ -1,4 +1,3 @@
-
 import { 
   collection, 
   addDoc, 
@@ -25,12 +24,13 @@ export const addBudget = async (budget: Omit<Budget, 'id' | 'createdAt'>) => {
     return { id: docRef.id, ...budget };
   } catch (error) {
     console.error("Error adding budget: ", error);
-    throw error;
+    throw new Error("Failed to add budget. Please check your Firestore rules and permissions.");
   }
 };
 
 export const getBudgets = async (userId: string) => {
   try {
+    console.log("Fetching budgets for user:", userId);
     const q = query(
       collection(db, budgetCollection),
       where("userId", "==", userId),
@@ -38,6 +38,7 @@ export const getBudgets = async (userId: string) => {
     );
     
     const querySnapshot = await getDocs(q);
+    console.log("Budget query snapshot size:", querySnapshot.size);
     const budgets: Budget[] = [];
     
     querySnapshot.forEach((doc) => {
@@ -52,7 +53,7 @@ export const getBudgets = async (userId: string) => {
     return budgets;
   } catch (error) {
     console.error("Error getting budgets: ", error);
-    throw error;
+    throw new Error("Failed to retrieve budgets. Please check your Firestore rules and permissions.");
   }
 };
 
