@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,17 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Financial app custom colors
+				finance: {
+					primary: '#3B82F6',    // Blue
+					success: '#10B981',    // Green for positive numbers
+					danger: '#EF4444',     // Red for negative numbers
+					warning: '#F59E0B',    // Yellow for warnings
+					dark: '#1F2937',       // Dark shade for text
+					light: '#F9FAFB',      // Light background
+					card: '#FFFFFF',       // Card background
+					accent: '#6366F1'      // Accent color
 				}
 			},
 			borderRadius: {
